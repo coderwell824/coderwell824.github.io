@@ -1,11 +1,11 @@
 # 网站标题
-title: Hexo主题-Quiet主题-Hexo扁平化主题安装
+title: 陈栓的博客
 # 网站标题后缀
-suffix: Quiet
+suffix: 个人博客
 # 作者名称
-author: Joey
+author: chenshuan
 # 网站关键字
-keyword: hexo主题,hexo扁平化主题,Quiet主题
+keyword: 个人博客
 #false是否开启文章背景图显示(随机图片)
 is_article_img: true  
 # 网站描述
@@ -14,12 +14,12 @@ web_description: 描述
 home_layout: card
 # 导航名称
 menus_title:
-  home: HOME
+  home: 首页
   archive: ARCHIVE
-  categories: CATEGORIES
-  tags: TAGS
-  links: LINKS
-  about: ABOUT
+  categories: 分类
+  tags: 文章标签
+  links: 链接
+  about: 关于
 # 导航 （不建议修改）
 menus:
   home: /
