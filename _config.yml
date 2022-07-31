@@ -103,7 +103,7 @@ theme: quiet
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:79W/quiet-example.git #https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io
+  repo: git@github.com:coderwell824/coderwell824.github.io.git #https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io
   branch: gh-pages
   message: 提交信息
   

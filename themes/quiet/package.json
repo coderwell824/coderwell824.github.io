@@ -8,19 +8,15 @@
     },
     "repository": {
       "type": "git",
-      "url": "git+https://github.com/79E/hexo-theme-quiet.git"
+      "url": "git+https://github.com/coderwell824/coderwell824.github.io.git"
     },
     "keywords": [
       "hexo",
       "theme",
       "quiet"
     ],
-    "author": "Joey (https://github.com/79E/)",
+    "author": "",
     "license": "MIT",
-    "bugs": {
-      "url": "https://github.com/79E/hexo-theme-quiet/issues"
-    },
-    "homepage": "https://79e.cc",
     "devDependencies": {
       "hexo": "^6.0.0",
       "hexo-renderer-ejs": "^2.0.0",
