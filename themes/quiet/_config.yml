@@ -7,19 +7,17 @@ author: chenshuan
 # 网站关键字
 keyword: 个人博客
 #false是否开启文章背景图显示(随机图片)
-is_article_img: true  
+is_article_img: false  
 # 网站描述
 web_description: 描述
 # 首页文章布局 默认 'card' 可选择 'block-card'
-home_layout: card
+home_layout: block-card
 # 导航名称
 menus_title:
   home: 首页
   archive: 汇总
   categories: 分类
   tags: 文章标签
-  links: 链接
-  about: 关于
 # 导航 （不建议修改）
 menus:
   home: /
@@ -61,13 +59,7 @@ headers:
 web_analytics:  
   enable: false #需要改为true
   baidu: 4b5fe1472f22fadsfs  # （替换）百度统计的 Key，参见 https://tongji.baidu.com/sc-web/10000033910/home/site/getjs?siteId=13751376 代码获取中 hm.js? 后边的字符串
-# 评论 
-gitalk:
-  clientID: 02b3c # （需要替换）GitHub Application Client ID.
-  clientSecret: adfc7b4 #（需要替换）GitHub Application Client Secret.
-  repo: gimment #（需要替换）GitHub repository.
-  owner: duneng #（需要替换）GitHub repository 所有者，可以是个人或者组织。
-  admin: ['duneng'] #（需要替换）GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
+
 
 # 底部显示的图标（github 或者其他）
 bottomIcon: 
@@ -80,14 +72,7 @@ bottomIcon:
     #跳转链接    
     toUrl: 'https://github.com/79E/hexo-theme-quiet'
   }
-# 友情链接
-linksList:
-  - {
-    title: 'Quiet',
-    intro: '收藏回忆与分享技术的地方',
-    link: 'https://github.com/79E/hexo-theme-quiet',
-    image: 'https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imgIMG_7327.jpeg'
-  }
+
 
 #默认的cover (默认缩略图) 在没有填写（这里可以替换（可以是api也可以是固定的图））
 default_cover: http://eett.cc/pictures?type=pc&category=fengjing
