@@ -742,7 +742,8 @@ hue-6-2: #e6c07b
   width: 100%;
   height: 200px;
   margin-bottom: 30px;
-  background: linear-gradient(to top, #f1f5fb, #f9fcff);
+  /* background: linear-gradient(to top, #f1f5fb, #f9fcff); */
+  background: url("https://github.com/coderwell824/coderwell824.github.io/blob/main/public/image/1.jpg");
   object-fit: cover;
 }
 .home .main .post-card-meat {
