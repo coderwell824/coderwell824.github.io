@@ -15,7 +15,7 @@ home_layout: card
 # 导航名称
 menus_title:
   home: 首页
-  archive: ARCHIVE
+  archive: 汇总
   categories: 分类
   tags: 文章标签
   links: 链接
@@ -36,7 +36,7 @@ icon: /image/favicon.ico
 # 每个页面的展示的图标和一句话
 headers:
     home: {
-      message: "首页这里应该有一句话，你想想写点什么？",
+      message: "欢迎来到陈栓的博客网站!",
       icon: "/image/logo.png"
     }
     archives: {
