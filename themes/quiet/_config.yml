@@ -3,15 +3,18 @@ title: 陈栓的博客
 # 网站标题后缀
 suffix: 个人博客
 # 作者名称
-author: chenshuan
+author: 陈栓
 # 网站关键字
 keyword: 个人博客
 #false是否开启文章背景图显示(随机图片)
-is_article_img: false  
+is_article_img: true  
 # 网站描述
 web_description: 描述
+
+
+
 # 首页文章布局 默认 'card' 可选择 'block-card'
-home_layout: block-card
+home_layout: card
 # 导航名称
 menus_title:
   home: 首页
@@ -35,7 +38,8 @@ icon: /image/favicon.ico
 headers:
     home: {
       message: "欢迎来到陈栓的博客网站!",
-      icon: "/image/logo.png"
+      icon: "/image/logo.png",
+      img: "/image/1.png"
     }
     archives: {
       # 这里会替换掉两个变量{ year 年，number 总数 } 当然也可以不写这两个变量
@@ -61,17 +65,17 @@ web_analytics:
   baidu: 4b5fe1472f22fadsfs  # （替换）百度统计的 Key，参见 https://tongji.baidu.com/sc-web/10000033910/home/site/getjs?siteId=13751376 代码获取中 hm.js? 后边的字符串
 
 
-# 底部显示的图标（github 或者其他）
-bottomIcon: 
-  #可以多个
-  - {
-    #描述名称
-    name: 'Github',
-    #图标    
-    iconLink: 'https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png',
-    #跳转链接    
-    toUrl: 'https://github.com/79E/hexo-theme-quiet'
-  }
+# # 底部显示的图标（github 或者其他）
+# bottomIcon: 
+#   #可以多个
+#   - {
+#     #描述名称
+#     # name: 'Github',
+#     #图标    
+#     # iconLink: 'https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png',
+#     #跳转链接    
+#     # toUrl: 'https://github.com/79E/hexo-theme-quiet'
+#   }
 
 
 #默认的cover (默认缩略图) 在没有填写（这里可以替换（可以是api也可以是固定的图））
