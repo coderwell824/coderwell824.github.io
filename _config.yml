@@ -8,13 +8,14 @@ subtitle: ''
 description: ''
 keywords:
 author: John Doe
-language: ch
+language: zh-CN
 timezone: ''
+
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: http://example.com
-permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -40,7 +41,7 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
@@ -79,7 +80,7 @@ meta_generator: true
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
 date_format: YYYY-MM-DD
-time_format: HH:mm:ss
+# time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
 updated_option: 'mtime'
 
@@ -98,6 +99,8 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: quiet
+disable_top_img: false
+index_img: http://lc-llaarrzl.cn-n1.lcfile.com/wgYxhjt8dyRsRfBITXXMGSV8gpLjMUQA/pexels-yasin-cesur-5610466.jpg
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment

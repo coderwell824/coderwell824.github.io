@@ -7,7 +7,7 @@ author: 陈栓
 # 网站关键字
 keyword: 个人博客
 #false是否开启文章背景图显示(随机图片)
-is_article_img: true  
+is_article_img: false  
 # 网站描述
 web_description: 描述
 
@@ -79,4 +79,7 @@ web_analytics:
 
 
 #默认的cover (默认缩略图) 在没有填写（这里可以替换（可以是api也可以是固定的图））
-default_cover: http://eett.cc/pictures?type=pc&category=fengjing
+disable_top_img: false
+default_cover: http://lc-llaarrzl.cn-n1.lcfile.com/wgYxhjt8dyRsRfBITXXMGSV8gpLjMUQA/pexels-yasin-cesur-5610466.jpg
+
+

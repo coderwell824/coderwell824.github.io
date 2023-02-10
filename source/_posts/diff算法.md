@@ -1,7 +1,7 @@
 ---
 title: React中的Diff算法
 category: React原理
-cover: https://www.python51.com/wp-content/uploads/2022/12/20221216-70.png
+cover: http://lc-llaarrzl.cn-n1.lcfile.com/u1sYzSrHdS48UR8wbeSIl28F2Ny4GrUx/diff.png
 ---
 
 # 前置知识：虚拟 DOM
