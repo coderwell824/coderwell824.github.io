@@ -373,82 +373,7 @@ ReactDOM.createRoot(document.getElementById(&#39;root&#39;)).render(&lt;App /&gt
 <p>这是因为遍历完 d 节点后，lastPlacedIndex 变成了 3，再去遍历 a、b、c、d 时，oldIndex 一定小于 lastPlacedIndex 了</p>
 <p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/71569a9e6e8045b585b0b1d5c3f100ea~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="UML 图 (7).jpg"></p>
 <p>因此，实际编写代码时，应该尽量避免节点往前移动的操作</p>
-<h1 id="Vue2中的双端Diff算法"><a href="#Vue2中的双端Diff算法" class="headerlink" title="Vue2中的双端Diff算法"></a>Vue2中的双端Diff算法</h1><p>Vue2中的双端Diff是旧的一组VNode( 旧子节点 )和新的一组VNode( 新子节点 )进行对比</p>
-<h2 id="第一轮遍历-1"><a href="#第一轮遍历-1" class="headerlink" title="第一轮遍历"></a>第一轮遍历</h2><p>所谓的双端, 表示在新旧子节点的数组中, 各用两个指针指向头尾节点, 在遍历过程中, 头尾指针不断靠拢. 因此, 用newStartIndex和newEndIndex分别指向新子节点中未处理的头尾节点, 用oldStartIndex和oldEndIndex分别指向旧子节点中未处理节点的头尾节点</p>
-<p>现在, 我们用「新前」表示新子节点中未处理节点的第一个节点; 用「新后」表示新子节点中未处理的最后一个节点; 「旧前」表示旧子节点中未处理节点的第一个节点; 用「旧后」表示旧子节点中未处理节点的最后一个节点</p>
-<p>每遍历到一个节点, 就尝试进行双端比较: 「新前 vs 旧前」、「新后 vs 旧后」、「新后 vs 旧前」、「新前 vs 旧后」, 如果匹配成功, 更新双端的指针 . 比如, 新旧子节点通过「新前 vs 旧后」匹配成功，那么 newStartIndex +&#x3D; 1，oldEndIndex -&#x3D; 1</p>
-<p>如果新旧子节点通过「新后 vs 旧前」匹配成功, 还需要将「旧前」对应的DOM节点插入到「旧后」对应的DOM节点之后. 如果新旧节点通过「新前 vs 旧后」, 还需要将「旧后」对应的DOM节点插入到「旧前」对应的DOM节点之前</p>
-<p>如果通过双端比较都没法找到匹配的节点, 就需要一个React中的existingChildren Map的Map对象了, 在Vue2的diff中, 这个名字叫做oldKeyToIdx Map. 通过这个Map, 遍历时可以尝试根据新子节点的key去找oldIndex, 查找结果会有两种:</p>
-<p>找到oldIndex, 即新旧子节点有相同key的节点</p>
-<p>如果VNode的type是相同的, 将旧子节点对应的DOM节点插入到「旧前」对应的DOM节点之前</p>
-<p>如果VNode的type是不同的, 创建一个新的DOM节点, 并插入到「旧前」对应的DOM节点之前</p>
-<p>没找到oldIndex, 需要根据新子节点(VNode)创建DOM元素, 并插入到「旧前」对应的DOM节点之前</p>
-<p>简单来说, 第一轮遍历会先尝试比较新旧子节点的双端节点, 如果匹配不成功, 再尝试在旧子节点中找到对应的节点. 至于DOM节点的移动, 需要记住只能移动到「旧前」之前或「旧后」之后 . 如果更新后节点位置被调到前面了 移动时就需要移动到「旧前」之前; 如果更新后节点位置被调到后面了, 移动时就需要移到「旧后」之后</p>
-<h2 id="第二轮遍历-1"><a href="#第二轮遍历-1" class="headerlink" title="第二轮遍历"></a>第二轮遍历</h2><p>如果第一轮遍历后, 只剩下新子节点( newStartIndex&gt;newEndIndex ) , 则根据剩余的新子节点(VNode)创建DOM节点, 并依次插入到父级DOM节点最后</p>
-<p>如果第一轮遍历后, 只剩下旧子节点(oldStartIndex&gt;oldEndIndex), 则将剩余旧子节点对应的DOM节点依次从父级DOM节点中删除</p>
-<p>需要注意的是, Vue在diff过程中, 会直接进行节点的更新&#x2F;新建&#x2F;删除操作, 这点和React是不同的</p>
-<p>下面展示了Vue2双端Diff的一些例子, 能够更好的消化理解算法:</p>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c45e7a6ad91b49f0ac9ec35e15484359~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="UML 图 (8).jpg"></p>
 <h1 id="React为什么不使用双端diff"><a href="#React为什么不使用双端diff" class="headerlink" title="React为什么不使用双端diff"></a>React为什么不使用双端diff</h1><p>简单地总结React不使用双端diff的原因: 由于双端diff需要向前查找节点, 但每个fiber节点上都没有反向指针, 即前一个fiber通过sibling属性指向后一个fiber, 只能从前往后遍历, 而不能反过来</p>
-<h1 id="Vue3中的快速Diff算法"><a href="#Vue3中的快速Diff算法" class="headerlink" title="Vue3中的快速Diff算法"></a>Vue3中的快速Diff算法</h1><p>注意: Vue3多节点的diff是旧的一组VNode( 旧子节点 ) 和新的一组VNode( 新子节点 )进行对比</p>
-<h2 id="第一轮遍历-2"><a href="#第一轮遍历-2" class="headerlink" title="第一轮遍历"></a>第一轮遍历</h2><p>先从新旧子节点的头部节点开始, 一个一个进行对比, 直到遇到不同的节点, 再从新旧子节点的尾部节点开始, 一个一个进行对比, 直到遇到不相同的节点</p>
-<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8985f95f59dd4ef083fc5318a39c7708~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="UML 图 (9).jpg"></p>
-<h2 id="第二轮遍历-2"><a href="#第二轮遍历-2" class="headerlink" title="第二轮遍历"></a>第二轮遍历</h2><p>如果第一轮遍历结束之后还有新子节点或旧子节点未被处理, 那么会有三种情况:</p>
-<ol>
-<li>只剩下新子节点         </li>
-<li>只剩下旧子节点          </li>
-<li>新旧子节点都有剩下的</li>
-</ol>
-<h2 id="第一种情况-只剩下新子节点"><a href="#第一种情况-只剩下新子节点" class="headerlink" title="第一种情况: 只剩下新子节点"></a>第一种情况: 只剩下新子节点</h2><p>对于剩余的新子节点, 依次创建对应的DOM节点, 并插到尾部已处理节点之前</p>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/af7e3ca002e04e13a5899893753a5d63~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="UML 图 (10).jpg"></p>
-<h2 id="第二种情况-只剩下旧子节点"><a href="#第二种情况-只剩下旧子节点" class="headerlink" title="第二种情况: 只剩下旧子节点"></a>第二种情况: 只剩下旧子节点</h2><p>对于剩余的旧子节点，依次从父级 DOM 节点中删除对应的 DOM 节点</p>
-<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac8c2b3d4cdf4422a722c36cc9c288cf~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="UML 图 (11).jpg"></p>
-<hr>
-<h2 id="第三种情况-新旧子节点都有剩下的"><a href="#第三种情况-新旧子节点都有剩下的" class="headerlink" title="第三种情况: 新旧子节点都有剩下的"></a>第三种情况: 新旧子节点都有剩下的</h2><p>这种情况下有可能有节点需要移动, 假设旧子节点的位置索引序列是递增序列, 使用新子节点在旧子节点中的位置索引组合成一个位置索引序列, 如果这个序列是非递增序列, 如果这个序列是非递增序列, 那么就肯定存在节点移动的情况. 进一步思考, 可以发现新的位置索引序列中的最大递增子序列是不需要移动的, 其余索引对应的节点才需要移动</p>
-<p>因此, 需要引入求解最长递增子序列的算法</p>
-<p>求解最长递增子序列：<strong>贪心 + 二分查找</strong></p>
-<hr>
-<p>现在让我们通过一个例子来理解处理流程吧</p>
-<p>旧子节点</p>
-<pre><code class="html">&lt;div&gt;
-  &lt;div key=&quot;a&quot;&gt;a&lt;/div&gt;
-  &lt;div key=&quot;b&quot;&gt;b&lt;/div&gt;
-  &lt;div key=&quot;c&quot;&gt;c&lt;/div&gt;
-  &lt;div key=&quot;d&quot;&gt;d&lt;/div&gt;
-  &lt;div key=&quot;f&quot;&gt;f&lt;/div&gt;
-  &lt;div key=&quot;e&quot;&gt;e&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-<p>新子节点</p>
-<pre><code class="html">&lt;div&gt;
-  &lt;div key=&quot;a&quot;&gt;a&lt;/div&gt;
-  &lt;div key=&quot;c&quot;&gt;c&lt;/div&gt;
-  &lt;div key=&quot;d&quot;&gt;d&lt;/div&gt;
-  &lt;div key=&quot;b&quot;&gt;b&lt;/div&gt;
-  &lt;div key=&quot;g&quot;&gt;g&lt;/div&gt;
-  &lt;div key=&quot;e&quot;&gt;e&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-<p>要求解最长递增子序列我们就先需要一个数组 newIndexToOldIndexMap（虽然源码中叫 Map，但它实际上是一个数组），这个数组表示新的一组子节点中的节点在旧的一组子节点中的位置索引。这个数组中的 0 值表示对应位置索引的新子节点在旧的一组子节点中不存在匹配的节点，证明需要挂载新的 DOM 节点。因此，只要新子节点在旧的一组子节点中能找到匹配的节点，在记录位置索引到 newIndexToOldIndexMap 前，都需要将位置索引做加 1 处理。</p>
-<p>为了构造这个 newIndexToOldIndexMap 数组，需要遍历未处理的旧子节点，遍历过程主要做以下事情：</p>
-<ol>
-<li><p>填充 newIndexToOldIndexMap 数组</p>
-</li>
-<li><p>确定是否存在需要移动的节点。这个结果将用于判断是否需要求解最长递增子序列，在没有节点移动的情况下，能降低时间复杂度。判断方法本质上和 React 是类似的实现原理，Vue 3 将访问过的最大 newIndex（旧子节点在新的一组子节点中的位置索引）记录到一个叫 maxNewIndexSoFar 的变量中，如果当前 newIndex &lt; maxNewIndexSoFar，证明存在需要移动的节点</p>
-</li>
-<li><p>更新那些能找到对应新子节点的旧子节点</p>
-</li>
-<li><p>卸载那些找不到对应新子节点的旧子节点</p>
-</li>
-</ol>
-<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8cc0ca3ac56c4bcc89157b0989e79334~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="1101-1.jpg"></p>
-<p>遍历完旧子节点后，数组 newIndexToOldIndexMap 为：[2, 3, 1, 0]，尽管最长递增子序列是 [2, 3]，但我们需要知道哪些位置的节点是不需要移动的，所以得到这样一个叫 increasingNewIndexSequence 的数组：[0, 1]，表示第一和第二个节点是不需要移动的</p>
-<p>接下来从后往前遍历新子节点（假设 i 为当前遍历节点的位置索引）：</p>
-<p>如果 newIndexToOldIndexMap[i] 为 0，需要新建 DOM 节点，插入到右边新子节点（VNode）的 DOM 节点之前</p>
-<p>如果 increasingNewIndexSequence 数组里不包含 i，证明这个新子节点不在最长递增子序列中，需要将它对应的 DOM 节点需要插入到右边新子节点的 DOM 节点之前</p>
-<p>如果 increasingNewIndexSequence 数组里包含 i，证明当前新子节点对应的 DOM 节点不需要移动</p>
-<p>注意，遍历新子节点时不再需要更新节点，因为在遍历旧子节点时已经更新过了</p>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5712293272e342dd8e179183d2e17f6c~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="UML 图 (12).jpg"></p>
 
   </div>
   <div id="gitalk-container"></div>
@@ -508,6 +433,13 @@ Fancybox.bind('[data-fancybox="fancybox-gallery-img"]', {
 </style>
 
     <div class="post-paging">
+    
+    <a href="/vue-diff/index/">
+        <div class="post-paging-last">
+            <span>上一篇</span>
+            <p>Vue中的Diff算法</p>
+        </div>
+    </a>
     
 
     
