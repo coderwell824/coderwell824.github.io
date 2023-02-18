@@ -43,7 +43,7 @@ headers:
     }
     archives: {
       # 这里会替换掉两个变量{ year 年，number 总数 } 当然也可以不写这两个变量
-      message: "居然用了 year 年一共才写了 number 篇文章!",
+      message: "居然用了 year 年共写了 number 篇文章!",
       icon: "https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imgicon-remixicon.svg"
     }
     tags: {
@@ -79,7 +79,9 @@ web_analytics:
 
 
 #默认的cover (默认缩略图) 在没有填写（这里可以替换（可以是api也可以是固定的图））
-disable_top_img: false
+
 default_cover: http://lc-llaarrzl.cn-n1.lcfile.com/wgYxhjt8dyRsRfBITXXMGSV8gpLjMUQA/pexels-yasin-cesur-5610466.jpg
+
+
 
 

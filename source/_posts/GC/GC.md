@@ -3,7 +3,6 @@ title: V8中的JavaScript垃圾回收机制
 category: Javascript
 cover: http://lc-llaarrzl.cn-n1.lcfile.com/f1JrDWywIysB0wBaGe6B4LGOnQQeLbUO/j.png
 date: 2023-02-03
-top_img: http://lc-llaarrzl.cn-n1.lcfile.com/f1JrDWywIysB0wBaGe6B4LGOnQQeLbUO/j.png
 ---
 
 # 浏览器垃圾的产生
