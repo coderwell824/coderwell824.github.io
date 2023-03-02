@@ -295,7 +295,7 @@
                          <a href="../../categories/Javascript/" target="_blank" >Javascript</a>
                     
                 </div>
-                <p>2023-02-21 00:00:00</p>
+                <p>2023-02-24 00:00:00</p>
             </div>
         </div>
     </div>
@@ -305,7 +305,214 @@
   <div id="article" class="post-content-info">
     
 
-    <p>ddd</p>
+    <h1 id="发布订阅模式的定义"><a href="#发布订阅模式的定义" class="headerlink" title="发布订阅模式的定义"></a>发布订阅模式的定义</h1><p>首先说明一下什么是发布-订阅模式都由统一的一个调度中心来处理, 那也就是说这个模式是由三部分组成的</p>
+<p>发布者: 将消息事件发布到调度中心</p>
+<p>订阅者: 把自己想关注的消息事件, 注册到调度中心</p>
+<p>调度中心: 处理事件注册与发布</p>
+<img src="http://lc-llAarrZL.cn-n1.lcfile.com/qptpsyOs9dm886K8Jf8XzCgTPWG5zwaj/image-20230301175521145.png" alt=" " style="zoom:50%;" />
+
+<h2 id="发布订阅模式的思路"><a href="#发布订阅模式的思路" class="headerlink" title="发布订阅模式的思路"></a>发布订阅模式的思路</h2><p>定义一个事件变量对象来存储消息事件, 因为订阅者不止一个</p>
+<p>定义一个添加方法, 将事件添加到事件变量对象中</p>
+<p>定义一个删除方法, 将事件在事件变量对象中删除</p>
+<p>定义一个派发方法, 调用事件变量对象中的事件</p>
+<pre><code class="javascript">class EventSubscription&#123;
+
+  constructor()&#123;
+    //定义事件容器, 用来存储事件数组
+    this.eventObject=&#123;&#125;
+  &#125;
+
+  //事件添加方法
+  addEventListener()&#123;
+
+  &#125;
+
+  //派发方法
+  dispatchEvent()&#123;
+
+  &#125;
+
+  //事件移除方法
+  removeEventListener()&#123;
+
+  &#125;
+&#125;
+</code></pre>
+<h2 id="addEventListener事件添加方法"><a href="#addEventListener事件添加方法" class="headerlink" title="addEventListener事件添加方法"></a>addEventListener事件添加方法</h2><p>添加消息事件是需要一个事件名以及消息事件的事件回调函数</p>
+<p>需要将消息事件添加到事件变量对象中, 并且不止一个变量</p>
+<p>添加事件变量时需要判断是否存在当前事件, 做不同的处理</p>
+<pre><code class="javascript">  /**
+   * @description:事件添加方法
+   * @param &#123;*&#125; eventName 事件名
+   * @param &#123;*&#125; callback 事件回调函数
+   */
+  addEventListener (eventName, callback) &#123;
+
+    //判断事件变量对象中是否存在当前事件, 如果没有的话初始化一个空数组
+    if (!this.eventObject[eventName]) &#123;
+      this.eventObject[eventName] = []
+    &#125; else &#123;
+      //如果存在, 那就说明该事件有多个订阅者, 继续往后push
+      this.eventObject[eventName].push(callback)
+    &#125;
+  &#125;
+</code></pre>
+<h2 id="removeEventListener事件移除方法"><a href="#removeEventListener事件移除方法" class="headerlink" title="removeEventListener事件移除方法"></a>removeEventListener事件移除方法</h2><p>删除消息事件是需要一个事件名的, 以及消息事件的事件回调函数</p>
+<p>在事件变量对象中, 对应的事件回调函数不止一个, 需要对符合条件的callback进行删除</p>
+<p>如果事件回调函数不存在的话, 直接删除事件</p>
+<pre><code class="javascript">  /**
+   * @description: 移除事件方法
+   * @param &#123;*&#125; eventName 事件名
+   * @param &#123;*&#125; callback 事件回调函数
+   */
+  removeEventListener (eventName, callback) &#123;
+
+    //判断该事件在事件变量对象中是否存在
+    if (!this.eventObject[eventName]) &#123;
+      return new Error(&quot;事件无效&quot;)
+    &#125;
+
+    //事件回调函数不存在直接移除该事件的订阅和发布
+    if (!callback) &#123;
+      delete this.eventObject[eventName]
+    &#125; else &#123;
+
+      //移除事件
+      const index = this.eventObject[eventName].findIndex(item =&gt; item === callback);
+      if (index === -1) return new Error(&quot;无该绑定事件&quot;)
+      this.eventObject[eventName].splice(index, 1)
+
+      //无事件回调函数移除该事件的订阅和发布
+      if (!this.eventObject[eventName].length) &#123;
+        delete this.eventObject[eventName];
+      &#125;
+    &#125;
+  &#125;
+</code></pre>
+<h2 id="diapatchEvent事件派发方法"><a href="#diapatchEvent事件派发方法" class="headerlink" title="diapatchEvent事件派发方法"></a>diapatchEvent事件派发方法</h2><p>事件派发方法只需要方法名, 确定是哪个事件, 也可以传递参数</p>
+<p>将事件变量对象中对应的事件回调函数依次执行</p>
+<pre><code class="javascript">  /**
+   * @description: 派发方法
+   * @param &#123;*&#125; eventName 事件名
+   * @param &#123;*&#125; params 参数
+   */
+  dispatchEvent (eventName, params) &#123;
+
+    //若没有注册该事件则抛出错误
+    if (!this.eventObject[eventName]) &#123;
+      return new Error(&quot;该事件未注册&quot;)
+    &#125;
+
+    //触发事件
+    this.eventObject[eventName].forEach((callback) =&gt; &#123;
+      callback(...params)
+    &#125;)
+  &#125;
+</code></pre>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><pre><code class="javascript">class EventSubscription &#123;
+
+  constructor() &#123;
+    //定义事件容器, 用来存储事件数组
+    this.eventObject = &#123;&#125;
+  &#125;
+
+  /**
+   * @description:事件添加方法
+   * @param &#123;*&#125; eventName 事件名
+   * @param &#123;*&#125; callback 事件回调函数
+   */
+  addEventListener (eventName, callback) &#123;
+
+    //判断事件变量对象中是否存在当前事件, 如果没有的话初始化一个空数组
+    if (!this.eventObject[eventName]) &#123;
+      this.eventObject[eventName] = []
+    &#125; else &#123;
+      //如果存在, 那就说明该事件有多个订阅者, 继续往后push
+      this.eventObject[eventName].push(callback)
+    &#125;
+  &#125;
+
+  /**
+   * @description: 移除事件方法
+   * @param &#123;*&#125; eventName 事件名
+   * @param &#123;*&#125; callback 事件回调函数
+   */
+  removeEventListener (eventName, callback) &#123;
+
+    //判断该事件在事件变量对象中是否存在
+    if (!this.eventObject[eventName]) &#123;
+      return new Error(&quot;事件无效&quot;)
+    &#125;
+
+    //事件回调函数不存在直接移除该事件的订阅和发布
+    if (!callback) &#123;
+      delete this.eventObject[eventName]
+    &#125; else &#123;
+
+      //移除事件
+      const index = this.eventObject[eventName].findIndex(item =&gt; item === callback);
+      if (index === -1) return new Error(&quot;无该绑定事件&quot;)
+      this.eventObject[eventName].splice(index, 1)
+
+      //无事件回调函数移除该事件的订阅和发布
+      if (!this.eventObject[eventName].length) &#123;
+        delete this.eventObject[eventName];
+      &#125;
+    &#125;
+  &#125;
+
+  /**
+   * @description: 派发方法
+   * @param &#123;*&#125; eventName 事件名
+   * @param &#123;*&#125; params 参数
+   */
+  dispatchEvent (eventName, params) &#123;
+
+    //若没有注册该事件则抛出错误
+    if (!this.eventObject[eventName]) &#123;
+      return new Error(&quot;该事件未注册&quot;)
+    &#125;
+
+    //触发事件
+    this.eventObject[eventName].forEach((callback) =&gt; &#123;
+      callback(...params)
+    &#125;)
+  &#125;
+&#125;
+</code></pre>
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><pre><code class="javascript">const eventSubscription = new EventSubscription();
+
+function test1 (params) &#123;
+  console.log(&quot;测试test1:&quot;, params);
+&#125;
+function test2 (params) &#123;
+  console.log(&quot;测试test2:&quot;, params);
+&#125;
+
+// 添加订阅内容
+eventSubscription.addEventListener(&#39;test&#39;, test1);
+eventSubscription.addEventListener(&#39;test&#39;, test2);
+console.dir(eventSubscription)
+// 输出结果
+// EventSubscription &#123;
+//     eventObject: &#123; test: [ [Function: test1], [Function: test2] ] &#125;
+// &#125;
+
+// 派发订阅事件
+eventSubscription.dispatchEvent(&#39;test&#39;, &#39;tests事件触发&#39;)
+// 输出结果
+// 测试test1: tests事件触发
+// 测试test2: tests事件触发
+
+// 删除订阅事件
+eventSubscription.removeEventListener(&#39;test&#39;, test2)
+console.log(eventSubscription)
+// 输出结果: EventSubscription &#123; eventObject: &#123; test: [ [Function: test1] ] &#125; &#125;
+
+eventSubscription.dispatchEvent(&#39;test&#39;)
+console.log(eventSubscription)
+// 输出结果: EventSubscription &#123; eventObject: &#123;&#125; &#125;
+</code></pre>
 
   </div>
   <div id="gitalk-container"></div>
